@@ -1,0 +1,83 @@
+{{> menu active="dashboard"}}
+
+<section class="section has-text-centered" id="place-description">
+  <div class="title has-text-centered">
+    {{placemark.name}}
+  </div>
+  <section class="block">
+    {{placemark.description}}
+  </section>
+</section>
+
+<section class="box">
+  <div class="columns is-vcentered">
+    <div class="column is-four-fifths">
+      {{> placemark-map}}
+    </div>
+    <div class="column is-one-fifth has-text-centered">
+      <h3 class="title is-3">{{region.name}} Region</h3>
+      <table class="table mx-auto is-striped">
+      <thead>
+        <tr>
+          <th>Best Vintages</th>
+          </tr>
+      </thead>
+        <tbody>
+          {{#each region.vintages}}
+        <tr>
+          <th>{{this}}</th>
+        </tr>
+        {{/each}}
+      </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+ <div class="section">
+  <div class="columns is-mobile">
+    <div class="column is-three-fifths is-offset-one-fifth has-text-centered">
+      <h3 class="title is-3">Grape varieties of the {{region.name}} region</h3><hr>
+      <ul id="grape-list">
+        {{#each region.grapes}}
+        <li></br>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+ </div>
+
+ 
+<div class="columns is-mobile">
+  <div class="column is-half is-offset-one-quarter has-text-centered">
+    <div class="box">
+      <h3 class="title is-3">Mark your visit with a photo</h3><hr>
+      {{> playlist-image }}
+    </div>
+  </div>
+</div>
+
+<hr>
+<div class="columns is-mobile">
+  <div class="column is-half is-offset-one-quarter has-text-centered">
+    <a class="button is-danger" id="delete" href="/placemark/deleteplacemark/{{placemark._id}}"> Delete Placemark </a>
+    <a class="button is-link" onclick="editPlacemark()">Edit Placemark </a> 
+  </div>
+</div>
+
+<div class="section" id="edit" style="display:none">
+  <hr>
+  {{> update-placemark}}
+</div>
+
+<script>
+  function editPlacemark() {
+    if (edit.style.display === 'none') {
+    // 👇️ this SHOWS the form
+    edit.style.display = 'block';
+  } else {
+    // 👇️ this HIDES the form
+    edit.style.display = 'none';
+  }
+  };
+</script>
