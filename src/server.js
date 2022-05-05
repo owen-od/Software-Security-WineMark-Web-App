@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import HapiSwagger from "hapi-swagger";
 import jwt from "hapi-auth-jwt2";
 import { fileURLToPath } from "url";
+import * as fs from "fs";
 import { webRoutes } from "./web-routes.js";
 import { db } from "./models/db.js";
 import { apiRoutes } from "./api-routes.js";
@@ -41,8 +42,12 @@ const swaggerOptions = {
 
 async function init() {
   const server = Hapi.server({
-    port: 3000,
+    port: 3443,
     host: "localhost",
+    tls: {
+      key: fs.readFileSync("./src/keys/private/webserver.key"),
+      cert: fs.readFileSync("./src/keys/webserver.crt")
+    }
   });
   await server.register([
     Inert,
