@@ -1,5 +1,6 @@
 import Hapi from "@hapi/hapi";
 import Vision from "@hapi/vision";
+import Bell from "@hapi/bell";
 import Inert from "@hapi/inert";
 import Handlebars from "handlebars";
 import Cookie from "@hapi/cookie";
@@ -57,9 +58,12 @@ async function init() {
       options: swaggerOptions,
     },
   ]);
+
   await server.register(Cookie);
   await server.register(jwt);
+  await server.register(Bell);
   server.validator(Joi);
+
   server.auth.strategy("session", "cookie", {
     cookie: {
       name: process.env.COOKIE_NAME,
@@ -69,11 +73,23 @@ async function init() {
     redirectTo: "/",
     validateFunc: accountsController.validate,
   });
+
   server.auth.strategy("jwt", "jwt", {
     key: process.env.cookie_password,
     validate: validate,
     verifyOptions: { algorithms: ["HS256"] }
   });
+
+  const bellAuthOptions = {
+    provider: "github",
+    password: "github-encryption-password-secure",
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    isSecure: false
+  };
+
+  server.auth.strategy("github-oauth", "bell", bellAuthOptions);
+
   server.auth.default("session");
   server.views({
     engines: {
