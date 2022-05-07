@@ -41,7 +41,9 @@ export const accountsController = {
   showLogin: {
     auth: false,
     handler: function (request, h) {
-      return h.view("login-view", { title: "Login to WineMark" });
+      // eslint-disable-next-line prefer-destructuring
+      const name = request.params.name;
+      return h.view("login-view", { title: "Login to WineMark", name: name });
     },
   },
   login: {

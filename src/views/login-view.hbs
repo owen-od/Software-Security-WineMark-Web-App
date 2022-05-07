@@ -3,7 +3,11 @@
 <section class="section">
   <div class="columns is-vcentered">
     <div class="column">
-      <h1 class="title">Log in</h1>
+      {{#if name}}
+        <h1 class="title">Welcome {{{name}}}, please log in</h1>
+      {{else}}
+        <h1 class="title">Log in</h1>
+      {{/if}}
       <form action="/authenticate" method="POST">
         <div class="field">
           <label class="label">Email</label> <input class="input" type="text" placeholder="Enter email" name="email">
@@ -21,7 +25,7 @@
       </div>
       <div class="column">
         <figure class="image is-2by1">
-          <img src="images/vineyard-1.jpg">
+          <img src="/images/vineyard-1.jpg">
         </figure>
       </div>
   </div>
