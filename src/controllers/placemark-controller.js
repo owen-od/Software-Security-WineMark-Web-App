@@ -1,3 +1,4 @@
+import sanitizeHtml from "sanitize-html";
 import { db } from "../models/db.js";
 import { imageStore } from "../models/image-store.js";
 import { PlacemarkSpec } from "../models/joi-schemas.js";
@@ -40,11 +41,11 @@ export const placemarkController = {
     handler: async function (request, h) {
       const placemark = await db.placemarkStore.getPlacemarkById(request.params.id);
       const newPlacemark = {
-        name: request.payload.name,
-        latitude: request.payload.latitude,
-        longitude: request.payload.longitude,
-        region: request.payload.region, 
-        description: request.payload.description,
+        name: sanitizeHtml(request.payload.name),
+        latitude: sanitizeHtml(request.payload.latitude),
+        longitude: sanitizeHtml(request.payload.longitude),
+        region: sanitizeHtml(request.payload.region), 
+        description: sanitizeHtml(request.payload.description),
       };
       await db.placemarkStore.editPlacemark(placemark._id, newPlacemark);
       return h.redirect(`/placemark/${request.params.id}`);

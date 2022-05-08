@@ -1,3 +1,4 @@
+import sanitizeHtml from "sanitize-html";
 import { db } from "../models/db.js";
 import { PlacemarkSpec } from "../models/joi-schemas.js";
 
@@ -31,11 +32,11 @@ export const dashboardController = {
     handler: async function (request, h) {
       const loggedInUser = request.auth.credentials;
       const newPlacemark = {
-        name: request.payload.name,
-        latitude: request.payload.latitude,
-        longitude: request.payload.longitude,
-        region: request.payload.region, 
-        description: request.payload.description,
+        name: sanitizeHtml(request.payload.name),
+        latitude: sanitizeHtml(request.payload.latitude),
+        longitude: sanitizeHtml(request.payload.longitude),
+        region: sanitizeHtml(request.payload.region), 
+        description: sanitizeHtml(request.payload.description),
         userid: loggedInUser._id,
       };
       await db.placemarkStore.addPlacemark(newPlacemark);
